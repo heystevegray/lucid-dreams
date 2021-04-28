@@ -1,4 +1,18 @@
+<div align="center">
+<br />
+<br />
+<h1>lucid-dreams</h1>
+<p>A CLI to convert a Lucidchart ERD to a Prisma schema file</p>
+<a href="https://www.npmjs.com/package/lucid-dreams">
+<img src="https://img.shields.io/npm/v/lucid-dreams" alt="npm package" />
+</a>
+<a href="https://www.npmjs.com/package/lucid-dreams">
+<img src="https://img.shields.io/npm/dt/lucid-dreams" alt="npm downloads" />
+</a>
+</div>
+
 - [Overview](#overview)
+  - [Installation](#installation)
   - [Usage](#usage)
   - [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
     - [Entity Relationship (2 columns)](#entity-relationship-2-columns)
@@ -13,6 +27,10 @@
 
 This CLI will take a Lucidchart "CSV of Shape Data" file as input, and output a [Prisma Schema file](https://www.prisma.io/docs/concepts/components/prisma-schema) 😎. Before the `schema.prisma` file is generated, [prisma format](https://www.prisma.io/docs/reference/api-reference/command-reference#format) is run against the file.
 
+## Installation
+```shell
+npm install lucid-dreams
+```
 ## Usage
 
 ```shell
