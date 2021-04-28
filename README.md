@@ -1,9 +1,9 @@
 - [Overview](#overview)
-- [Usage](#usage)
-	- [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
-		- [Entity Relationship (2 columns)](#entity-relationship-2-columns)
-			- [Shape Structure](#shape-structure)
-			- [Example](#example)
+  - [Usage](#usage)
+  - [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
+    - [Entity Relationship (2 columns)](#entity-relationship-2-columns)
+      - [Shape Structure](#shape-structure)
+      - [Example](#example)
 
 # Overview
 
@@ -13,15 +13,15 @@
 
 This CLI will take a Lucidchart "CSV of Shape Data" file as input, and output a [Prisma Schema file](https://www.prisma.io/docs/concepts/components/prisma-schema) 😎. Before the `schema.prisma` file is generated, [prisma format](https://www.prisma.io/docs/reference/api-reference/command-reference#format) is run against the file.
 
-# Usage
+## Usage
 
 ```shell
-lucid-dreams --prisma ~/path/to/lucidchart/data.csv
+npx lucid-dreams --prisma ~/path/to/lucidchart/data.csv
 ```
 The `--prisma` (or `-p`) flag means we will convert the Entity Relationship Diagram to a `schema.prisma` file. Here is the example with the `-p` flag:
 
 ```shell
-lucid-dreams -p ~/path/to/data.csv
+npx lucid-dreams -p ~/path/to/data.csv
 ```
 
 ## Supported Lucidchart Shapes
