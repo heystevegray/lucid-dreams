@@ -36,7 +36,7 @@ npm install lucid-dreams
 ```shell
 npx lucid-dreams --prisma ~/path/to/lucidchart/data.csv
 ```
-The `--prisma` (or `-p`) flag means we will convert the Entity Relationship Diagram to a `schema.prisma` file. Here is the example with the `-p` flag:
+The `--prisma` (or `-p`) flag means we will convert the Entity Relationship Diagram to a `schema.prisma` file. Here is an example with the `-p` flag:
 
 ```shell
 npx lucid-dreams -p ~/path/to/data.csv
