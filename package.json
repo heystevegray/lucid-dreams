@@ -15,7 +15,6 @@
         "build": "tsc -p .",
         "test": "jest",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-        "prisma:format": "prisma format",
         "format": "prettier --write ."
     },
     "keywords": [
@@ -28,8 +27,7 @@
         "arg": "^5.0.0",
         "csv-parser": "^3.0.0",
         "esm": "^3.2.25",
-        "listr": "^0.14.3",
-        "prisma": "^2.21.2"
+        "listr": "^0.14.3"
     },
     "devDependencies": {
         "@types/jest": "^26.0.23",
