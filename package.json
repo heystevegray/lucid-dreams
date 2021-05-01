@@ -2,17 +2,21 @@
     "name": "lucid-dreams",
     "version": "1.0.5",
     "description": "A CLI to convert a Lucidchart ERD to a Prisma schema file",
-    "main": "src/index.ts",
+    "main": "src/cli.ts",
     "bin": {
         "lucid-dreams": "bin/lucid-dreams"
     },
     "publishConfig": {
         "access": "public"
     },
+    "files": [
+        "lib",
+        "bin"
+    ],
     "scripts": {
-        "dev": "nodemon --watch '**/*.ts' --exec tsc -p .",
+        "dev": "nodemon --exec npm run build",
         "create": "npm run build && npm run test",
-        "build": "tsc -p .",
+        "build": "rm -rf lib && tsc -p .",
         "test": "jest",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
         "format": "prettier --write ."

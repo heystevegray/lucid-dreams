@@ -3,13 +3,14 @@ import { createReadStream, promises as fs, unlinkSync, existsSync } from 'fs'
 import { exec } from 'child_process'
 import path from 'path'
 import Lister from 'listr'
+import { prismaDatabaseTypes } from './constants'
 
+const outputFile = './schema.prisma'
 const SHAPE_LIBRARY = 'Shape Library'
 const ENTITY_RELATIONSHIP = 'Entity Relationship'
 const TABLE_NAME = 'Text Area 1'
 const TEXT_AREA = 'Text Area'
 const ID = 'id'
-const outputFile = './schema.prisma'
 
 export type LucidChart = {
     Id: number
@@ -36,14 +37,52 @@ type Column = {
     type: string
 }
 
+const parseCharacterCount = (
+    chars: string,
+    subStringLength: number
+): string => {
+    return chars.replace('(', '').replace(')', '').substring(subStringLength)
+}
+
+const convertToPascalCase = (name: string): string => {
+    return name.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
+        return g1.toUpperCase() + g2.toLowerCase()
+    })
+}
+const handleType = (type: string): string => {
+    const typeLowercase = type.toLowerCase()
+    let result = typeLowercase
+
+    if (typeLowercase.includes('varchar')) {
+        const charLength = parseCharacterCount(type, 'varchar'.length)
+        return `String ${prismaDatabaseTypes.varchar}(${charLength})`
+    }
+    if (typeLowercase.includes('char')) {
+        const charLength = parseCharacterCount(type, 'char'.length)
+        return `String ${prismaDatabaseTypes.char}(${charLength})`
+    }
+    if (
+        typeLowercase.includes('datetime') ||
+        typeLowercase.includes('time') ||
+        typeLowercase.includes('date')
+    ) {
+        return `${prismaDatabaseTypes.datetime}`
+    }
+
+    return convertToPascalCase(result)
+}
+
 const convertLucidToPrisma = (lucidRow: LucidChartCSVRow): string => {
     const { tableName, columns } = lucidRow
 
-    const fields = columns.map(({ name, type }) => {
+    const fields = columns.map(({ name, type: originalType }) => {
+        const type = handleType(originalType)
+
         if (name === ID) {
             // Auto increment
             return `${name}\t${type}\t${`@id @default (autoincrement())`}\n`
         }
+
         return `${name}\t${type}\t\n`
     })
 

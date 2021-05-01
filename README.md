@@ -11,13 +11,15 @@
 </a>
 </div>
 
-- [Overview](#overview)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
-    - [Entity Relationship (2 columns)](#entity-relationship-2-columns)
-      - [Shape Structure](#shape-structure)
-      - [Example](#example)
+-   [Overview](#overview)
+    -   [Installation](#installation)
+    -   [Usage](#usage)
+    -   [Supported Data Types](#supported-data-types)
+        -   [Prisma](#prisma)
+    -   [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
+        -   [Entity Relationship (2 columns)](#entity-relationship-2-columns)
+            -   [Shape Structure](#shape-structure)
+            -   [Example](#example)
 
 # Overview
 
@@ -28,19 +30,37 @@
 This CLI will take a Lucidchart "CSV of Shape Data" file as input, and output a [Prisma Schema file](https://www.prisma.io/docs/concepts/components/prisma-schema) 😎. Before the `schema.prisma` file is generated, [prisma format](https://www.prisma.io/docs/reference/api-reference/command-reference#format) is run against the file.
 
 ## Installation
+
 ```shell
 npm install lucid-dreams
 ```
+
 ## Usage
 
 ```shell
 npx lucid-dreams --prisma ~/path/to/lucidchart/data.csv
 ```
+
 The `--prisma` (or `-p`) flag means we will convert the Entity Relationship Diagram to a `schema.prisma` file. Here is an example with the `-p` flag:
 
 ```shell
 npx lucid-dreams -p ~/path/to/data.csv
 ```
+
+## Supported Data Types
+
+### Prisma
+
+Lucidchart data types are converted to the following Prisma [model field scalar types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference/#model-field-scalar-types):
+
+| Lucidchart Type | Prisma model field scalar types |
+| --------------- | ------------------------------- |
+| int             | Int                             |
+| datetime        | DateTime                        |
+| date            | DateTime                        |
+| time            | DateTime                        |
+| varchar(100)    | String @db.VarChar(100)         |
+| char(245)       | String @db.Char(245)            |
 
 ## Supported Lucidchart Shapes
 
