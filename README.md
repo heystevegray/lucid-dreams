@@ -11,15 +11,15 @@
 </a>
 </div>
 
--   [Overview](#overview)
-    -   [Installation](#installation)
-    -   [Usage](#usage)
-    -   [Supported Data Types](#supported-data-types)
-        -   [Prisma](#prisma)
-    -   [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
-        -   [Entity Relationship (2 columns)](#entity-relationship-2-columns)
-            -   [Shape Structure](#shape-structure)
-            -   [Example](#example)
+- [Overview](#overview)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Supported Data Types](#supported-data-types)
+    - [Prisma](#prisma)
+  - [Supported Lucidchart Shapes](#supported-lucidchart-shapes)
+    - [Entity Relationship (2 columns)](#entity-relationship-2-columns)
+      - [Shape Structure](#shape-structure)
+      - [Example](#example)
 
 # Overview
 
@@ -53,7 +53,7 @@ npx lucid-dreams -p ~/path/to/data.csv
 
 Lucidchart data types are converted to the following Prisma [model field scalar types](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference/#model-field-scalar-types):
 
-| Lucidchart Type | Prisma model field scalar types |
+| Lucidchart type | Prisma model field scalar types |
 | --------------- | ------------------------------- |
 | int             | Int                             |
 | datetime        | DateTime                        |
