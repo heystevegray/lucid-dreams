@@ -21,6 +21,7 @@
         "test:watch": "jest --watchAll",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
         "format": "prettier --write .",
+        "prisma:format": "prisma format",
         "release": "npm run build && npx np"
     },
     "keywords": [
@@ -38,7 +39,8 @@
         "arg": "^5.0.0",
         "csv-parser": "^3.0.0",
         "esm": "^3.2.25",
-        "listr": "^0.14.3"
+        "listr": "^0.14.3",
+        "prisma": "^2.23.0"
     },
     "devDependencies": {
         "@types/jest": "^26.0.23",
