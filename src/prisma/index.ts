@@ -212,16 +212,17 @@ const format = async (): Promise<void> => {
         try {
             exec('npx prisma format', (error, stdout, stderr) => {
                 if (error) {
-                    // console.log(`${error.message}`)
+                    console.error(`${error.message}`)
                     return reject(error.message)
                 }
                 if (stderr) {
-                    // console.log(`${stderr}`)
+                    console.error(`${stderr}`)
                     return reject(stderr)
                 }
-                resolve()
+                return resolve()
             })
         } catch (error) {
+            console.error(`${error}`)
             reject(error)
         }
     })
