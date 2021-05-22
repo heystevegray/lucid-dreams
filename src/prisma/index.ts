@@ -210,16 +210,14 @@ const parseLucidChart = (results: LucidChart[]): string => {
 const format = async (): Promise<void> => {
     return new Promise((resolve, reject) => {
         try {
-            exec('npm run prisma:format', (error, stdout, stderr) => {
+            exec('npx prisma format', (error, stdout, stderr) => {
                 if (error) {
-                    console.log(`${error.message}`)
-                    reject(error.message)
-                    return
+                    // console.log(`${error.message}`)
+                    return reject(error.message)
                 }
                 if (stderr) {
-                    console.log(`${stderr}`)
-                    reject(stderr)
-                    return
+                    // console.log(`${stderr}`)
+                    return reject(stderr)
                 }
                 resolve()
             })
