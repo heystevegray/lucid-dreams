@@ -18,8 +18,10 @@
         "create": "npm run build && npm run test",
         "build": "rm -rf lib && tsc -p .",
         "test": "jest",
+        "test:watch": "jest --watchAll",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "release": "npm run build && npx np"
     },
     "keywords": [
         "cli",

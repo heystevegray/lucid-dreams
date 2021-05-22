@@ -5,14 +5,23 @@ import path from 'path'
 import Lister from 'listr'
 import { prismaDatabaseTypes } from './constants'
 
-const outputFile = './schema.prisma'
 const SHAPE_LIBRARY = 'Shape Library'
 const ENTITY_RELATIONSHIP = 'Entity Relationship'
 const TABLE_NAME = 'Text Area 1'
 const TEXT_AREA = 'Text Area'
-const ID = 'id'
 
-export type LucidChart = {
+const outputFile = './schema.prisma'
+
+const schemaHeaders = `datasource db {
+      provider = "postgresql"
+      url      = env("DATABASE_URL")
+    }
+
+    generator client {
+      provider = "prisma-client-js"
+    }`
+
+type LucidChart = {
     Id: number
     Name: string
     'Line Source': string
@@ -24,6 +33,24 @@ export type LucidChart = {
     'Contained By': string
     Group: string
     [TABLE_NAME]: string
+    'Text Area 2': string
+    'Text Area 3': string
+    'Text Area 4': string
+    'Text Area 5': string
+    'Text Area 6': string
+    'Text Area 7': string
+    'Text Area 8': string
+    'Text Area 9': string
+    'Text Area 10': string
+    'Text Area 11': string
+    'Text Area 12': string
+    'Text Area 13': string
+    'Text Area 14': string
+    'Text Area 15': string
+    'Text Area 16': string
+    'Text Area 17': string
+    'Text Area 18': string
+    'Text Area 19': string
 }
 
 type LucidChartCSVRow = {
@@ -49,39 +76,71 @@ const convertToPascalCase = (name: string): string => {
         return g1.toUpperCase() + g2.toLowerCase()
     })
 }
-const handleType = (type: string): string => {
+
+const handleType = (fieldName: string, type: string): string => {
     const typeLowercase = type.toLowerCase()
-    let result = typeLowercase
+    let resultType = typeLowercase
+    const optionalCheck = /\?/
+    const nullCheck = /\(null\)/i
+    const isOptional = resultType.match(optionalCheck) || resultType.match(nullCheck)
+    const optionalSuffix = isOptional ? '?' : ''
+    const isDate = resultType.includes('datetime') || resultType.includes('time') || resultType.includes('date') || resultType.includes('timestamp')
+    // String? or String
+    const stringPrefix = `String${optionalSuffix}`
 
-    if (typeLowercase.includes('varchar')) {
-        const charLength = parseCharacterCount(type, 'varchar'.length)
-        return `String ${prismaDatabaseTypes.varchar}(${charLength})`
-    }
-    if (typeLowercase.includes('char')) {
-        const charLength = parseCharacterCount(type, 'char'.length)
-        return `String ${prismaDatabaseTypes.char}(${charLength})`
-    }
-    if (
-        typeLowercase.includes('datetime') ||
-        typeLowercase.includes('time') ||
-        typeLowercase.includes('date')
-    ) {
-        return `${prismaDatabaseTypes.datetime}`
+    // If the type contains '(null)'
+    if (resultType.match(nullCheck)) {
+        // Replace with ?
+        resultType = resultType.replace(nullCheck, '?')
     }
 
-    return convertToPascalCase(result)
+    if (isOptional && !resultType.includes('int') && !isDate) {
+        /*
+        * Remove ? from 'varchar' and 'char' types
+        * ? is added after String not @db.VarChar(50) 
+        * Example: String? @db.VarChar(50)
+        */
+        resultType = resultType.replace(optionalCheck, '')
+    }
+
+    // Check for the Lucidchart field name of 'id'
+    if (fieldName === 'id') {
+
+        if (resultType === 'uuid' || resultType === 'id') {
+            // Don't think this can have an "?" optional modifier
+            return prismaDatabaseTypes.uuid
+        }
+
+        // Auto increment
+        return prismaDatabaseTypes.intAutoIncrement
+    }
+
+    if (resultType.includes('varchar')) {
+        const charLength = parseCharacterCount(resultType, 'varchar'.length)
+        return `${stringPrefix} ${prismaDatabaseTypes.varchar}(${charLength})`
+    }
+
+    if (resultType.includes('char')) {
+        const charLength = parseCharacterCount(resultType, 'char'.length)
+        return `${stringPrefix} ${prismaDatabaseTypes.char}(${charLength})`
+    }
+
+    if (resultType.includes('bool') || resultType.includes('Boolean')) {
+        return `${prismaDatabaseTypes.boolean}${optionalSuffix}`
+    }
+
+    if (isDate) {
+        return `${prismaDatabaseTypes.datetime}${optionalSuffix}`
+    }
+
+    return convertToPascalCase(resultType)
 }
 
 const convertLucidToPrisma = (lucidRow: LucidChartCSVRow): string => {
     const { tableName, columns } = lucidRow
 
     const fields = columns.map(({ name, type: originalType }) => {
-        const type = handleType(originalType)
-
-        if (name === ID) {
-            // Auto increment
-            return `${name}\t${type}\t${`@id @default (autoincrement())`}\n`
-        }
+        const type = handleType(name, originalType)
 
         return `${name}\t${type}\t\n`
     })
@@ -94,8 +153,12 @@ const generatePrismaSchema = async (schema: string): Promise<void> => {
     await fs.writeFile(outputFile, schema)
 }
 
-export const parseLucidChart = (results: LucidChart[]): string => {
+const parseLucidChart = (results: LucidChart[]): string => {
     const schema = []
+
+    // schema headers
+    schema.push(schemaHeaders)
+
     for (let index = 0; index < results.length; index++) {
         const row = results[index] as LucidChart
         const {
@@ -135,6 +198,7 @@ export const parseLucidChart = (results: LucidChart[]): string => {
                 columns,
                 relationShipType,
             }
+
             const model = convertLucidToPrisma(lucidRow)
             schema.push(model)
         }
@@ -153,8 +217,6 @@ const format = async (): Promise<void> => {
                     return
                 }
                 if (stderr) {
-                    console.log(' hi')
-
                     console.log(`${stderr}`)
                     reject(stderr)
                     return
@@ -167,17 +229,17 @@ const format = async (): Promise<void> => {
     })
 }
 
-const cleanup = async (inputFile: string): Promise<void> => {
+const cleanup = async (inputFile: string = ""): Promise<void> => {
     return new Promise((resolve, reject) => {
         try {
             if (existsSync(inputFile)) {
                 unlinkSync(inputFile)
-                console.log(`Deleted ${inputFile}`)
+                // console.log(`Deleted ${inputFile}`)
             }
 
             if (existsSync(outputFile)) {
                 unlinkSync(outputFile)
-                console.log(`Deleted ${outputFile}`)
+                // console.log(`Deleted ${outputFile}`)
             }
             resolve()
         } catch (error) {
@@ -248,4 +310,4 @@ const lucidToPrisma = async (inputFile: string): Promise<void> => {
         .finally(() => [process.exit(1)])
 }
 
-export { lucidToPrisma }
+export { lucidToPrisma, parseLucidChart, cleanup, outputFile, generatePrismaSchema, schemaHeaders, LucidChart }

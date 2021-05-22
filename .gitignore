@@ -1,2 +1,3 @@
 schema.prisma
 node_modules
+coverage

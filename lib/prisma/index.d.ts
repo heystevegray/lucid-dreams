@@ -1,17 +1,39 @@
-declare const TABLE_NAME = 'Text Area 1'
-export declare type LucidChart = {
-    Id: number
-    Name: string
-    'Line Source': string
-    'Line Destination'?: string
-    'Shape Library'?: string
-    'Source Arrow'?: string
-    'Destination Arrow'?: string
-    'Page ID': string
-    'Contained By': string
-    Group: string
-    [TABLE_NAME]: string
-}
-export declare const parseLucidChart: (results: LucidChart[]) => string
-declare const lucidToPrisma: (inputFile: string) => Promise<void>
-export { lucidToPrisma }
+declare const TABLE_NAME = "Text Area 1";
+declare const outputFile = "./schema.prisma";
+declare const schemaHeaders = "datasource db {\n      url      = env(\"DATABASE_URL\")\n      provider = \"postgresql\"\n    }\n\n    generator client {\n      provider = \"prisma-client-js\"\n    }";
+declare type LucidChart = {
+    Id: number;
+    Name: string;
+    'Line Source': string;
+    'Line Destination'?: string;
+    'Shape Library'?: string;
+    'Source Arrow'?: string;
+    'Destination Arrow'?: string;
+    'Page ID': string;
+    'Contained By': string;
+    Group: string;
+    [TABLE_NAME]: string;
+    'Text Area 2': string;
+    'Text Area 3': string;
+    'Text Area 4': string;
+    'Text Area 5': string;
+    'Text Area 6': string;
+    'Text Area 7': string;
+    'Text Area 8': string;
+    'Text Area 9': string;
+    'Text Area 10': string;
+    'Text Area 11': string;
+    'Text Area 12': string;
+    'Text Area 13': string;
+    'Text Area 14': string;
+    'Text Area 15': string;
+    'Text Area 16': string;
+    'Text Area 17': string;
+    'Text Area 18': string;
+    'Text Area 19': string;
+};
+declare const generatePrismaSchema: (schema: string) => Promise<void>;
+declare const parseLucidChart: (results: LucidChart[]) => string;
+declare const cleanup: (inputFile?: string) => Promise<void>;
+declare const lucidToPrisma: (inputFile: string) => Promise<void>;
+export { lucidToPrisma, parseLucidChart, cleanup, outputFile, generatePrismaSchema, schemaHeaders, LucidChart };
