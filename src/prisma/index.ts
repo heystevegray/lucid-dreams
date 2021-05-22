@@ -307,7 +307,7 @@ const lucidToPrisma = async (inputFile: string): Promise<void> => {
         .then(() => {
             console.log(`\n✅ Successfully created ${absolutePath}`)
         })
-        .finally(() => [process.exit(1)])
+        .finally(() => process.exit())
 }
 
 export { lucidToPrisma, parseLucidChart, cleanup, outputFile, generatePrismaSchema, schemaHeaders, LucidChart }
