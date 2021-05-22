@@ -1,6 +1,6 @@
 declare const TABLE_NAME = "Text Area 1";
 declare const outputFile = "./schema.prisma";
-declare const schemaHeaders = "datasource db {\n      url      = env(\"DATABASE_URL\")\n      provider = \"postgresql\"\n    }\n\n    generator client {\n      provider = \"prisma-client-js\"\n    }";
+declare const schemaHeaders = "datasource db {\n      provider = \"postgresql\"\n      url      = env(\"DATABASE_URL\")\n    }\n\n    generator client {\n      provider = \"prisma-client-js\"\n    }";
 declare type LucidChart = {
     Id: number;
     Name: string;
