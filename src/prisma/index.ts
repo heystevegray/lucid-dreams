@@ -210,7 +210,7 @@ const parseLucidChart = (results: LucidChart[]): string => {
 const format = async (): Promise<void> => {
     return new Promise((resolve, reject) => {
         try {
-            exec('npx prisma format', (error, stdout, stderr) => {
+            exec('npx prisma@latest format', (error, stdout, stderr) => {
                 if (error) {
                     console.error(`${error.message}`)
                     return reject(error.message)
