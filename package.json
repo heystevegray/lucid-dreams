@@ -1,6 +1,6 @@
 {
     "name": "lucid-dreams",
-    "version": "1.0.12-0",
+    "version": "1.0.12-1",
     "description": "A CLI to convert a Lucidchart ERD to a Prisma schema file",
     "main": "src/cli.ts",
     "bin": {
