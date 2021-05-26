@@ -77,6 +77,13 @@ const convertToPascalCase = (name: string): string => {
     })
 }
 
+const isUUID = (type: string): boolean => {
+    if (type === 'uuid' || type === 'id') {
+        return true
+    }
+    return false
+}
+
 const handleType = (fieldName: string, type: string): string => {
     const typeLowercase = type.toLowerCase()
     let resultType = typeLowercase
@@ -105,14 +112,15 @@ const handleType = (fieldName: string, type: string): string => {
 
     // Check for the Lucidchart field name of 'id'
     if (fieldName === 'id') {
-
-        if (resultType === 'uuid' || resultType === 'id') {
-            // Don't think this can have an "?" optional modifier
-            return prismaDatabaseTypes.uuid
+        if (!isUUID(resultType)) {
+            // Auto increment
+            return prismaDatabaseTypes.intAutoIncrement
         }
+    }
 
-        // Auto increment
-        return prismaDatabaseTypes.intAutoIncrement
+    // Check for UUID types
+    if (isUUID(resultType)) {
+        return prismaDatabaseTypes.uuid
     }
 
     if (resultType.includes('varchar')) {
