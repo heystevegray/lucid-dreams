@@ -110,8 +110,9 @@ const handleType = (fieldName: string, type: string): string => {
         resultType = resultType.replace(optionalCheck, '')
     }
 
-    // Check for the Lucidchart field name of 'id'
-    if (fieldName === 'id') {
+    // Check if the Lucidchart field name is 'id' or similar to 'userId'
+    const fieldNameEndsWithID = fieldName.toLocaleLowerCase().substring(fieldName.length - 2) === 'id'
+    if (fieldName === 'id' || fieldNameEndsWithID) {
         if (!isUUID(resultType)) {
             // Auto increment
             return prismaDatabaseTypes.intAutoIncrement
